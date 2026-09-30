@@ -77,6 +77,21 @@ console.log(formatReport(report, 'json'));
 Same data either way, `buildReport` computes it once; `formatReport` just
 picks how to print it.
 
+### .puz files
+
+`readPuz` takes the bytes of an Across Lite file and returns the grid plus
+title, author, copyright and notes. Solution letters and clues are dropped,
+since only the block pattern is modelled. `writePuz` goes the other way: open
+cells get a placeholder letter and clues are left empty, so the output is a
+valid template that a solving app can open and you can fill in there.
+
+```ts
+import { readPuz, writePuz } from './src/index';
+
+const { grid, title } = readPuz(bytes); // bytes: Uint8Array
+const out = writePuz(grid, { title });
+```
+
 ## Why
 
 Every crossword tool ends up reimplementing grid numbering and symmetry
@@ -88,8 +103,8 @@ without redoing it each time.
 ## Status
 
 Early skeleton. Grid parsing, numbering, symmetry checking, and the
-text/JSON report all work. Not yet covered: reading standard puzzle file
-formats (.puz, ipuz), non-rectangular grids, and any kind of fill/solve
+text/JSON report, and .puz reading and writing all work. Not yet covered:
+ipuz, non-rectangular grids, and any kind of fill/solve
 logic.
 
 ## License
